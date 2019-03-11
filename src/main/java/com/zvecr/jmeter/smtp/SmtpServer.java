@@ -39,6 +39,14 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	private String authUsername;
 	private String authPassword;
 
+	private String sslEnabled;
+	private Boolean enforceStartTLS = false;
+	private Boolean trustAllCerts = false;
+	private Boolean useLocalTrustStore = false;
+	private String trustStoreToUse;
+
+	private Boolean debugEnabled = false;
+
 	/**
 	 * Unit testing constructor
 	 */
@@ -180,5 +188,53 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 
 	public void setAuthPassword(String authPassword) {
 		this.authPassword = authPassword;
+	}
+
+	public String getSslEnabled() {
+		return sslEnabled;
+	}
+
+	public void setSslEnabled(String sslEnabled) {
+		this.sslEnabled = sslEnabled;
+	}
+
+	public Boolean getEnforceStartTLS() {
+		return enforceStartTLS;
+	}
+
+	public void setEnforceStartTLS(Boolean enforceStartTLS) {
+		this.enforceStartTLS = enforceStartTLS;
+	}
+
+	public Boolean getTrustAllCerts() {
+		return trustAllCerts;
+	}
+
+	public void setTrustAllCerts(Boolean trustAllCerts) {
+		this.trustAllCerts = trustAllCerts;
+	}
+
+	public Boolean getUseLocalTrustStore() {
+		return useLocalTrustStore;
+	}
+
+	public void setUseLocalTrustStore(Boolean useLocalTrustStore) {
+		this.useLocalTrustStore = useLocalTrustStore;
+	}
+
+	public String getTrustStoreToUse() {
+		return trustStoreToUse;
+	}
+
+	public void setTrustStoreToUse(String trustStoreToUse) {
+		this.trustStoreToUse = trustStoreToUse;
+	}
+
+	public Boolean getDebugEnabled() {
+		return debugEnabled;
+	}
+
+	public void setDebugEnabled(Boolean debugEnabled) {
+		this.debugEnabled = debugEnabled;
 	}
 }

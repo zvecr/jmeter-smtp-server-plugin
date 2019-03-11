@@ -1,15 +1,25 @@
 package com.zvecr.jmeter.smtp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
+
+import org.apache.jmeter.util.JMeterUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SmtpServerBeanInfoTest {
 
+	@BeforeClass
+	public static void init() {
+		// bit of a bodge instead of mocking static function
+		JMeterUtils.setLocale(Locale.ENGLISH);
+	}
+
 	@Test
 	public void expected_number_of_fields() {
 		SmtpServerBeanInfo info = new SmtpServerBeanInfo();
-		assertEquals(7, info.getPropertyDescriptors().length);
+		assertEquals(13, info.getPropertyDescriptors().length);
 	}
 
 }

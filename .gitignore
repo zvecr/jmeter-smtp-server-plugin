@@ -13,3 +13,7 @@ buildNumber.properties
 
 .vagrant/
 .vscode/
+.classpath
+.factorypath
+.project
+.settings/

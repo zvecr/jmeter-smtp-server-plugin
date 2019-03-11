@@ -7,9 +7,11 @@ import org.apache.jmeter.testbeans.gui.IntegerPropertyEditor;
 import org.apache.jmeter.testbeans.gui.TypeEditor;
 
 import com.zvecr.jmeter.util.CheckboxEditor;
+import com.zvecr.jmeter.util.RadioButtonEditor;
 
 /**
- * GUI descriptors for {@link SmtpServer} - enables auto generation of UI elements
+ * GUI descriptors for {@link SmtpServer} - enables auto generation of UI
+ * elements
  */
 public class SmtpServerBeanInfo extends BeanInfoSupport {
 
@@ -23,6 +25,7 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 		genTimeoutSettingsGroup();
 		genAuthSettingsGroup();
 		genSecuritySettingsGroup();
+		genAdditionalSettingsGroup();
 	}
 
 	private void genServerSettingsGroup() {
@@ -70,6 +73,40 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 	}
 
 	private void genSecuritySettingsGroup() {
-		// TODO: implement tls
+		createPropertyGroup("securitySettingsGroup", new String[] { "sslEnabled", "enforceStartTLS", "trustAllCerts",
+				"useLocalTrustStore", "trustStoreToUse" });
+
+		PropertyDescriptor p = property("sslEnabled");
+		p.setPropertyEditorClass(RadioButtonEditor.class);
+		p.setValue(RadioButtonEditor.OPTS, new String[] { "useNoSecurity", "useSSL", "useStartTLS" });
+		p.setValue(RESOURCE_BUNDLE, this.getBeanDescriptor().getValue(RESOURCE_BUNDLE));
+
+		p = property("enforceStartTLS");
+		p.setPropertyEditorClass(CheckboxEditor.class);
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, Boolean.FALSE);
+
+		p = property("trustAllCerts");
+		p.setPropertyEditorClass(CheckboxEditor.class);
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, Boolean.FALSE);
+
+		p = property("useLocalTrustStore");
+		p.setPropertyEditorClass(CheckboxEditor.class);
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, Boolean.FALSE);
+
+		p = property("trustStoreToUse");
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, "");
+	}
+
+	private void genAdditionalSettingsGroup() {
+		createPropertyGroup("additionalSettingsGroup", new String[] { "debugEnabled" });
+
+		PropertyDescriptor p = property("debugEnabled");
+		p.setPropertyEditorClass(CheckboxEditor.class);
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, Boolean.FALSE);
 	}
 }

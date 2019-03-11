@@ -6,7 +6,8 @@ import java.beans.PropertyEditorSupport;
 import javax.swing.JCheckBox;
 
 /**
- * Adds support for {@link JCheckBox} as a {@link PropertyDescriptor} editor type
+ * Adds support for {@link JCheckBox} as a {@link PropertyDescriptor} editor
+ * type
  */
 public class CheckboxEditor extends PropertyEditorSupport {
 
@@ -34,9 +35,11 @@ public class CheckboxEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setValue(Object value) {
-		if (value instanceof String) {
+		if (value == null) {
+			// do something with default ???
+		} else if (value instanceof String) {
 			check.setSelected(Boolean.valueOf((String) value));
-		} else if (value == null || value instanceof Boolean) {
+		} else if (value instanceof Boolean) {
 			check.setSelected((Boolean) value);
 		} else {
 			throw new IllegalArgumentException("Unexpected type: " + value.getClass().getName());
