@@ -80,6 +80,7 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 		p.setPropertyEditorClass(RadioButtonEditor.class);
 		p.setValue(RadioButtonEditor.OPTS, new String[] { "useNoSecurity", "useSSL", "useStartTLS" });
 		p.setValue(RESOURCE_BUNDLE, this.getBeanDescriptor().getValue(RESOURCE_BUNDLE));
+		p.setValue(DEFAULT, "useNoSecurity");
 
 		p = property("enforceStartTLS");
 		p.setPropertyEditorClass(CheckboxEditor.class);

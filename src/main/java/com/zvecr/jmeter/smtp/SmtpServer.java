@@ -75,10 +75,14 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 			LOG.error("creating server for thread group [{}]", key);
 
 			SmtpSink server = new SmtpSink(getServerHost(), getServerPort());
+			server.configureTimeouts(getConnectTimeout(), getReadTimeout());
+			//getThreadContext().getThreadGroup().getNumberOfThreads();
+
 			if (getAuthEnabled())
 				server.enableAuth(getAuthUsername(), getAuthPassword());
-			// TODO:tls
-			// TODO:timeouts
+			if(getSslEnabled() != null && !getSslEnabled().equals("useNoSecurity"))
+				server.enableTLS(getSslEnabled().equals("useSSL"), getSslEnabled().equals("useStartTLS"));
+
 			server.start();
 			return server;
 		});

@@ -13,6 +13,7 @@ public class SmtpServerBeanInfoTest {
 	@BeforeClass
 	public static void init() {
 		// bit of a bodge instead of mocking static function
+		//   however this does set global state
 		JMeterUtils.setLocale(Locale.ENGLISH);
 	}
 
