@@ -113,7 +113,6 @@ public class SmtpServerIT {
 	public void test_ssl() throws Exception {
 		// configure
 		server.setSslEnabled("useSSL");
-		server.setTrustAllCerts(true);
 
 		// start
 		server.getOrCreateServer();
@@ -126,10 +125,10 @@ public class SmtpServerIT {
 
 	@Test
 	public void test_starttls() throws Exception {
+		// configure
 		server.setSslEnabled("useStartTLS");
-		server.setEnforceStartTLS(true);
-		server.setTrustAllCerts(true);
 
+		// start
 		server.getOrCreateServer();
 
 		getMailer().withTransportStrategy(TransportStrategy.SMTP_TLS)

@@ -73,8 +73,8 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 	}
 
 	private void genSecuritySettingsGroup() {
-		createPropertyGroup("securitySettingsGroup", new String[] { "sslEnabled", "enforceStartTLS", "trustAllCerts",
-				"useLocalTrustStore", "trustStoreToUse" });
+		createPropertyGroup("securitySettingsGroup",
+				new String[] { "sslEnabled", "useKeyStore", "keyStoreLocation", "keyStorePassword" });
 
 		PropertyDescriptor p = property("sslEnabled");
 		p.setPropertyEditorClass(RadioButtonEditor.class);
@@ -82,22 +82,16 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 		p.setValue(RESOURCE_BUNDLE, this.getBeanDescriptor().getValue(RESOURCE_BUNDLE));
 		p.setValue(DEFAULT, "useNoSecurity");
 
-		p = property("enforceStartTLS");
+		p = property("useKeyStore");
 		p.setPropertyEditorClass(CheckboxEditor.class);
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
 		p.setValue(DEFAULT, Boolean.FALSE);
 
-		p = property("trustAllCerts");
-		p.setPropertyEditorClass(CheckboxEditor.class);
+		p = property("keyStoreLocation");
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-		p.setValue(DEFAULT, Boolean.FALSE);
-
-		p = property("useLocalTrustStore");
-		p.setPropertyEditorClass(CheckboxEditor.class);
-		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-		p.setValue(DEFAULT, Boolean.FALSE);
-
-		p = property("trustStoreToUse");
+		p.setValue(DEFAULT, "");
+		
+		p = property("keyStorePassword");
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
 		p.setValue(DEFAULT, "");
 	}

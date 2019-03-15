@@ -20,7 +20,7 @@ public class SmtpServerBeanInfoTest {
 	@Test
 	public void expected_number_of_fields() {
 		SmtpServerBeanInfo info = new SmtpServerBeanInfo();
-		assertEquals(13, info.getPropertyDescriptors().length);
+		assertEquals(12, info.getPropertyDescriptors().length);
 	}
 
 }

@@ -40,10 +40,9 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	private String authPassword;
 
 	private String sslEnabled;
-	private Boolean enforceStartTLS = false;
-	private Boolean trustAllCerts = false;
-	private Boolean useLocalTrustStore = false;
-	private String trustStoreToUse;
+	private Boolean useKeyStore = false;
+	private String keyStoreLocation;
+	private String keyStorePassword;
 
 	private Boolean debugEnabled = false;
 
@@ -202,38 +201,30 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 		this.sslEnabled = sslEnabled;
 	}
 
-	public Boolean getEnforceStartTLS() {
-		return enforceStartTLS;
+	public Boolean getUseKeyStore() {
+		return useKeyStore;
 	}
 
-	public void setEnforceStartTLS(Boolean enforceStartTLS) {
-		this.enforceStartTLS = enforceStartTLS;
+	public void setUseKeyStore(Boolean useKeyStore) {
+		this.useKeyStore = useKeyStore;
 	}
 
-	public Boolean getTrustAllCerts() {
-		return trustAllCerts;
+	public String getKeyStoreLocation() {
+		return keyStoreLocation;
 	}
 
-	public void setTrustAllCerts(Boolean trustAllCerts) {
-		this.trustAllCerts = trustAllCerts;
+	public void setKeyStoreLocation(String keyStoreLocation) {
+		this.keyStoreLocation = keyStoreLocation;
 	}
 
-	public Boolean getUseLocalTrustStore() {
-		return useLocalTrustStore;
+	public String getKeyStorePassword() {
+		return keyStorePassword;
 	}
 
-	public void setUseLocalTrustStore(Boolean useLocalTrustStore) {
-		this.useLocalTrustStore = useLocalTrustStore;
+	public void setKeyStorePassword(String keyStorePassword) {
+		this.keyStorePassword = keyStorePassword;
 	}
-
-	public String getTrustStoreToUse() {
-		return trustStoreToUse;
-	}
-
-	public void setTrustStoreToUse(String trustStoreToUse) {
-		this.trustStoreToUse = trustStoreToUse;
-	}
-
+	
 	public Boolean getDebugEnabled() {
 		return debugEnabled;
 	}
