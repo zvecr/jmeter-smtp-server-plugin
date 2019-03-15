@@ -15,6 +15,9 @@
 
     <modules>
         <module>simple</module>
+        <module>auth</module>
+        <module>ssl</module>
+        <module>starttls</module>
     </modules>
 
     <build>
@@ -38,6 +41,10 @@
                             <goals>
                                 <goal>results</goal>
                             </goals>
+                            <configuration>
+							    <!-- TODO: Remove once SMTP server plugin is stable -->
+                                <errorRateThresholdInPercent>5</errorRateThresholdInPercent>
+                            </configuration>
                         </execution>
                     </executions>
                     <configuration>
@@ -45,6 +52,7 @@
                             <artifact>com.zvecr.jmeter:smtp-server:1.0.0-SNAPSHOT</artifact>
                         </jmeterExtensions>
                         <downloadExtensionDependencies>true</downloadExtensionDependencies>
+                        <guiTestFile>${project.basedir}/src/test/jmeter/SMTP.jmx</guiTestFile>
                     </configuration>
                 </plugin>
             </plugins>
