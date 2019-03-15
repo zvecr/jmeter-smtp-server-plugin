@@ -66,9 +66,9 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	 * @return configured and started smtp server
 	 */
 	SmtpSink getOrCreateServer() {
-		// TODO: use something (hash of config) to allow multiple servers per thread group?
-		Integer id = getThreadContext().getThreadGroup().hashCode();
-		String computedKey = id.toString();
+		// TODO: use something (hash of config?) to allow multiple servers per thread group?
+		//String computedKey = Integer.valueOf(getThreadContext().getThreadGroup().hashCode()).toString();
+		String computedKey = getThreadContext().getThreadGroup().getName() + this.getName();
 
 		return pool.computeIfAbsent(computedKey, key -> {
 			LOG.error("creating server for thread group [{}]", key);
