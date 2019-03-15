@@ -41,10 +41,6 @@
                             <goals>
                                 <goal>results</goal>
                             </goals>
-                            <configuration>
-							    <!-- TODO: Remove once SMTP server plugin is stable -->
-                                <errorRateThresholdInPercent>5</errorRateThresholdInPercent>
-                            </configuration>
                         </execution>
                     </executions>
                     <configuration>
