@@ -1,11 +1,10 @@
 package com.zvecr.jmeter.smtp.server;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
-
 
 import org.apache.james.mime4j.dom.Message;
 import org.slf4j.Logger;
@@ -19,8 +18,8 @@ import org.subethamail.smtp.auth.LoginFailedException;
 public class SmtpSink {
 	static final Logger LOG = LoggerFactory.getLogger(SmtpSink.class);
 
-	final BlockingQueue<Message> messages = new LinkedBlockingQueue<>();
-	private final SmtpsServer server;
+	private final BlockingQueue<Message> messages = new LinkedBlockingQueue<>();
+	private final SmtpsServer server = new SmtpsServer(ctx -> new SinkMessageHandler(messages));
 
 	private long readTimeout = TimeUnit.SECONDS.toMillis(5);
 
@@ -31,13 +30,10 @@ public class SmtpSink {
 	 * @param port
 	 */
 	public SmtpSink(String host, int port) {
-		server = new SmtpsServer(ctx -> new SinkMessageHandler(messages));
 		server.setHostName(host);
 		server.setPort(port);
 
-		// TODO: configure timeouts
 		// TODO: set size of thread pool
-		// TODO: tls
 	}
 
 	/**
@@ -45,8 +41,10 @@ public class SmtpSink {
 	 * 
 	 * @param username
 	 * @param password
+	 * 
+	 * @return this
 	 */
-	public void enableAuth(String username, String password) {
+	public SmtpSink withAuth(String username, String password) {
 		Objects.requireNonNull(username);
 		Objects.requireNonNull(password);
 		if (server.isRunning())
@@ -56,9 +54,41 @@ public class SmtpSink {
 			if (!username.equals(user) || !password.equals(pass))
 				throw new LoginFailedException();
 		}));
+
+		return this;
 	}
 
-	public void configureTimeouts(int connectionTimeout, int readTimeout) {
+	/**
+	 * Configure server for SSL/STARTTLS <B>Concurrent SSL and STARTTLS not
+	 * currently supported</B>
+	 * 
+	 * @param enableTLS
+	 * @param enableStartTLS
+	 * 
+	 * @return this
+	 */
+	public SmtpSink withTLS(Boolean enableTLS, Boolean enableStartTLS) {
+		if (server.isRunning())
+			throw new IllegalStateException("Cannot modify already running server");
+
+		if (enableTLS && enableStartTLS)
+			throw new IllegalStateException("Concurrent SSL and STARTTLS not currently supported");
+
+		server.setEnableTLS(enableTLS || enableStartTLS);
+		server.setRequireTLS(enableStartTLS);
+
+		return this;
+	}
+
+	/**
+	 * Configure timeouts used within the smtp server and message queue
+	 * 
+	 * @param connectionTimeout
+	 * @param readTimeout
+	 *
+	 * @return this
+	 */
+	public SmtpSink withTimeouts(int connectionTimeout, int readTimeout) {
 		if (server.isRunning())
 			throw new IllegalStateException("Cannot modify already running server");
 
@@ -66,14 +96,28 @@ public class SmtpSink {
 			server.setConnectionTimeout(connectionTimeout);
 		if (readTimeout != 0)
 			this.readTimeout = readTimeout;
+
+		return this;
 	}
 
-	public void enableTLS(Boolean enableTLS, Boolean enableStartTLS) {
+	/**
+	 * Configure keystore to use within SSL/STARTTLS
+	 * 
+	 * @param keystore
+	 * @param password
+	 * 
+	 * @return this
+	 */
+	public SmtpSink withKeystore(File keystore, String password) {
+		Objects.requireNonNull(keystore);
+		Objects.requireNonNull(password);
 		if (server.isRunning())
 			throw new IllegalStateException("Cannot modify already running server");
 
-		server.setEnableTLS(enableTLS || enableStartTLS);
-		server.setRequireTLS(enableStartTLS);
+		server.setKeystore(keystore);
+		server.setKeystorePassword(password);
+
+		return this;
 	}
 
 	/**

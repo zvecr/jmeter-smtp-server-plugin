@@ -1,6 +1,7 @@
 package com.zvecr.jmeter.smtp;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.james.mime4j.dom.Message;
@@ -67,20 +68,22 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	 */
 	SmtpSink getOrCreateServer() {
 		// TODO: use something (hash of config?) to allow multiple servers per thread group?
-		//String computedKey = Integer.valueOf(getThreadContext().getThreadGroup().hashCode()).toString();
+		// String computedKey = Integer.valueOf(getThreadContext().getThreadGroup().hashCode()).toString();
 		String computedKey = getThreadContext().getThreadGroup().getName() + this.getName();
 
 		return pool.computeIfAbsent(computedKey, key -> {
 			LOG.error("creating server for thread group [{}]", key);
 
 			SmtpSink server = new SmtpSink(getServerHost(), getServerPort());
-			server.configureTimeouts(getConnectTimeout(), getReadTimeout());
-			//getThreadContext().getThreadGroup().getNumberOfThreads();
+			server.withTimeouts(getConnectTimeout(), getReadTimeout());
+			// getThreadContext().getThreadGroup().getNumberOfThreads();
 
 			if (getAuthEnabled())
-				server.enableAuth(getAuthUsername(), getAuthPassword());
-			if(getSslEnabled() != null && !getSslEnabled().equals("useNoSecurity"))
-				server.enableTLS(getSslEnabled().equals("useSSL"), getSslEnabled().equals("useStartTLS"));
+				server.withAuth(getAuthUsername(), getAuthPassword());
+			if (getSslEnabled() != null && !getSslEnabled().equals("useNoSecurity"))
+				server.withTLS(getSslEnabled().equals("useSSL"), getSslEnabled().equals("useStartTLS"));
+			if (getUseKeyStore())
+				server.withKeystore(new File(getKeyStoreLocation()), getKeyStorePassword());
 
 			server.start();
 			return server;
@@ -224,7 +227,7 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	public void setKeyStorePassword(String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
 	}
-	
+
 	public Boolean getDebugEnabled() {
 		return debugEnabled;
 	}
