@@ -39,16 +39,18 @@ public class SmtpsServer extends SMTPServer {
 			return Files.newInputStream(keystore.toPath());
 		}
 
-		// using a "built in" default keystore is a bit hacky but reduces the time to
-		// setup basic tests
+		// using a "built in" default keystore is a bit hacky
+		//   but reduces the time to setup basic tests
 		keystorePassword = "password";
 		return this.getClass().getResourceAsStream("/keystore.jks");
 	}
 
 	private SSLContext getSSLContext() throws GeneralSecurityException, IOException {
-		// TODO: honour system properties:
-		// "javax.net.ssl.keyStore"
-		// "javax.net.ssl.keyStorePassword"
+		// honour system properties if set
+		String keyStoreFilename = System.getProperty("javax.net.ssl.keyStore", "");
+		String keyStorePassword = System.getProperty("javax.net.ssl.keyStorePassword", "");
+		if (!keyStoreFilename.isEmpty() && !keyStorePassword.isEmpty())
+			return SSLContext.getDefault();
 
 		KeyStore keyStore = KeyStore.getInstance("JKS");
 		try (InputStream file = getKeystoreStream()) {
