@@ -19,8 +19,9 @@ public class SmtpServerBeanInfoTest {
 
 	@Test
 	public void expected_number_of_fields() {
+		// sanity check to see if "SmtpServer" bean is wired up correctly
 		SmtpServerBeanInfo info = new SmtpServerBeanInfo();
-		assertEquals(12, info.getPropertyDescriptors().length);
+		assertEquals(13, info.getPropertyDescriptors().length);
 	}
 
 }

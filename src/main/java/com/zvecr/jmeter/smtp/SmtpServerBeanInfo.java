@@ -74,7 +74,7 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 
 	private void genSecuritySettingsGroup() {
 		createPropertyGroup("securitySettingsGroup",
-				new String[] { "sslEnabled", "useKeyStore", "keyStoreLocation", "keyStorePassword" });
+				new String[] { "sslEnabled", "useKeyStore", "keyStoreLocation", "keyStorePassword", "sslProtocols" });
 
 		PropertyDescriptor p = property("sslEnabled");
 		p.setPropertyEditorClass(RadioButtonEditor.class);
@@ -90,10 +90,16 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 		p = property("keyStoreLocation");
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
 		p.setValue(DEFAULT, "");
-		
+
 		p = property("keyStorePassword");
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
 		p.setValue(DEFAULT, "");
+
+		p = property("sslProtocols");
+		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+		p.setValue(DEFAULT, "");
+		// TODO: add support for overriding SSL protocols
+		p.setHidden(true);
 	}
 
 	private void genAdditionalSettingsGroup() {
@@ -103,5 +109,7 @@ public class SmtpServerBeanInfo extends BeanInfoSupport {
 		p.setPropertyEditorClass(CheckboxEditor.class);
 		p.setValue(NOT_UNDEFINED, Boolean.TRUE);
 		p.setValue(DEFAULT, Boolean.FALSE);
+		// TODO: add support for debug logging
+		p.setHidden(true);
 	}
 }

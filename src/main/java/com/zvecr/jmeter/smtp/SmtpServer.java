@@ -44,6 +44,7 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	private Boolean useKeyStore = false;
 	private String keyStoreLocation;
 	private String keyStorePassword;
+	private String sslProtocols;
 
 	private Boolean debugEnabled = false;
 
@@ -226,6 +227,14 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 
 	public void setKeyStorePassword(String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
+	}
+
+	public String getSslProtocols() {
+		return sslProtocols;
+	}
+
+	public void setSslProtocols(String sslProtocols) {
+		this.sslProtocols = sslProtocols;
 	}
 
 	public Boolean getDebugEnabled() {
