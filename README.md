@@ -1,7 +1,7 @@
 # jmeter-smtp-server-plugin
 > SMTP server plugin for JMeter.
 
-![TODO: TRAVIS BUILD STATUS]()
+[![Build Status](https://travis-ci.org/zvecr/jmeter-smtp-server-plugin.svg?branch=master)](https://travis-ci.org/zvecr/jmeter-smtp-server-plugin)
 
 Self contained, pure java SMTP server hosted directly within JMeter. Aligned with the default `SMTP sampler`, the plugin provides support for various configuration including SMTP auth and TLS.
 

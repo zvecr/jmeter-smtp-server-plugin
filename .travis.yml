@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - openjdk8
+  - openjdk9
+script:
+  - mvn clean install
+  - mvn -f examples/pom.xml clean verify -fae
+deploy:
+  provider: script
+  script: "echo 'todo'"
+  on:
+    tags: true
