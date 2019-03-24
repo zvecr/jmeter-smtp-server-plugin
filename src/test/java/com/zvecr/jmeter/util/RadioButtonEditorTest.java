@@ -22,48 +22,48 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class RadioButtonEditorTest {
 
-	@Mock
-	PropertyDescriptor descriptor;
+    @Mock
+    PropertyDescriptor descriptor;
 
-	RadioButtonEditor editor;
+    RadioButtonEditor editor;
 
-	@Before
-	public void init() throws Exception {
-		// ResourceBundle has final methods
-		Mockito.when(descriptor.getValue(BeanInfoSupport.RESOURCE_BUNDLE)).thenReturn(new ResourceBundle() {
-			@Override
-			public Enumeration<String> getKeys() {
-				return Collections.enumeration(Arrays.asList("foo", "bar"));
-			}
+    @Before
+    public void init() throws Exception {
+        // ResourceBundle has final methods
+        Mockito.when(descriptor.getValue(BeanInfoSupport.RESOURCE_BUNDLE)).thenReturn(new ResourceBundle() {
+            @Override
+            public Enumeration<String> getKeys() {
+                return Collections.enumeration(Arrays.asList("foo", "bar"));
+            }
 
-			@Override
-			protected Object handleGetObject(String key) {
-				return "KEY[" + key + "]";
-			}
-		});
-		Mockito.when(descriptor.getValue(RadioButtonEditor.OPTS)).thenReturn(new String[] { "foo", "bar" });
+            @Override
+            protected Object handleGetObject(String key) {
+                return "KEY[" + key + "]";
+            }
+        });
+        Mockito.when(descriptor.getValue(RadioButtonEditor.OPTS)).thenReturn(new String[] { "foo", "bar" });
 
-		editor = new RadioButtonEditor();
-		editor.setDescriptor(descriptor);
-	}
+        editor = new RadioButtonEditor();
+        editor.setDescriptor(descriptor);
+    }
 
-	@Test
-	public void valid_editor() {
-		assertTrue(editor.supportsCustomEditor());
-		assertTrue(editor.getCustomEditor() instanceof JPanel);
-	}
+    @Test
+    public void valid_editor() {
+        assertTrue(editor.supportsCustomEditor());
+        assertTrue(editor.getCustomEditor() instanceof JPanel);
+    }
 
-	@Test
-	public void as_text_conversion() {
-		editor.setAsText("foo");
-		assertEquals("foo", editor.getAsText());
+    @Test
+    public void as_text_conversion() {
+        editor.setAsText("foo");
+        assertEquals("foo", editor.getAsText());
 
-		editor.setAsText("bar");
-		assertEquals("bar", editor.getAsText());
-	}
+        editor.setAsText("bar");
+        assertEquals("bar", editor.getAsText());
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void as_unexpected_conversion() {
-		editor.setValue(1);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void as_unexpected_conversion() {
+        editor.setValue(1);
+    }
 }

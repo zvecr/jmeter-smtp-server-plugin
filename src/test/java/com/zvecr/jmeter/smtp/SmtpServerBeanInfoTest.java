@@ -10,18 +10,18 @@ import org.junit.Test;
 
 public class SmtpServerBeanInfoTest {
 
-	@BeforeClass
-	public static void init() {
-		// bit of a bodge instead of mocking static function
-		//   however this does set global state
-		JMeterUtils.setLocale(Locale.ENGLISH);
-	}
+    @BeforeClass
+    public static void init() {
+        // bit of a bodge instead of mocking static function
+        // however this does set global state
+        JMeterUtils.setLocale(Locale.ENGLISH);
+    }
 
-	@Test
-	public void expected_number_of_fields() {
-		// sanity check to see if "SmtpServer" bean is wired up correctly
-		SmtpServerBeanInfo info = new SmtpServerBeanInfo();
-		assertEquals(13, info.getPropertyDescriptors().length);
-	}
+    @Test
+    public void expected_number_of_fields() {
+        // sanity check to see if "SmtpServer" bean is wired up correctly
+        SmtpServerBeanInfo info = new SmtpServerBeanInfo();
+        assertEquals(13, info.getPropertyDescriptors().length);
+    }
 
 }

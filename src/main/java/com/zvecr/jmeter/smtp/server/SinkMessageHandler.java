@@ -14,47 +14,46 @@ import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.RejectException;
 
 /**
- * Connection handler that receives raw SMTP, converts, and stores on the
- * message queue
+ * Connection handler that receives raw SMTP, converts, and stores on the message queue
  */
 public class SinkMessageHandler implements MessageHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(SinkMessageHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SinkMessageHandler.class);
 
-	private final BlockingQueue<Message> messages;
+    private final BlockingQueue<Message> messages;
 
-	/**
-	 * @param smtpSink
-	 */
-	public SinkMessageHandler(BlockingQueue<Message> messages) {
-		this.messages = messages;
-	}
+    /**
+     * @param smtpSink
+     */
+    public SinkMessageHandler(BlockingQueue<Message> messages) {
+        this.messages = messages;
+    }
 
-	private final MessageBuilder builder = new DefaultMessageBuilder();
+    private final MessageBuilder builder = new DefaultMessageBuilder();
 
-	@Override
-	public void from(String from) {
-		// do we care about envelope sender?
-	}
+    @Override
+    public void from(String from) {
+        // do we care about envelope sender?
+    }
 
-	@Override
-	public void recipient(String recipient) {
-		// do we care about envelope sender?
-	}
+    @Override
+    public void recipient(String recipient) {
+        // do we care about envelope sender?
+    }
 
-	@Override
-	public void data(InputStream data) throws IOException {
-		try {
-			Message message = builder.parseMessage(data);
-			messages.add(message);
+    @Override
+    public void data(InputStream data) throws IOException {
+        try {
+            Message message = builder.parseMessage(data);
+            messages.add(message);
 
-			LOG.trace("Received message:{}", message.getMessageId());
-		} catch (MimeException e) {
-			throw new RejectException(e.getMessage());
-		}
-	}
+            LOG.trace("Received message:{}", message.getMessageId());
+        } catch (MimeException e) {
+            throw new RejectException(e.getMessage());
+        }
+    }
 
-	@Override
-	public void done() {
-		// do nothing
-	}
+    @Override
+    public void done() {
+        // do nothing
+    }
 }

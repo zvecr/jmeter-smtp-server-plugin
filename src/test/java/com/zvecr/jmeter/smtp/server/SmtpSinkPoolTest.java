@@ -12,31 +12,31 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SmtpSinkPoolTest {
 
-	@Mock
-	SmtpSink sink;
+    @Mock
+    SmtpSink sink;
 
-	SmtpSinkPool pool;
+    SmtpSinkPool pool;
 
-	@Before
-	public void init() throws Exception {
-		pool = new SmtpSinkPool();
-	}
+    @Before
+    public void init() throws Exception {
+        pool = new SmtpSinkPool();
+    }
 
-	@Test
-	public void add_only_once() {
-		pool.computeIfAbsent("a", (key) -> sink);
-		pool.computeIfAbsent("a", (key) -> {
-			fail();
-			return null;
-		});
-	}
+    @Test
+    public void add_only_once() {
+        pool.computeIfAbsent("a", (key) -> sink);
+        pool.computeIfAbsent("a", (key) -> {
+            fail();
+            return null;
+        });
+    }
 
-	@Test
-	public void shutdown_called_for_all_sinks() {
-		pool.computeIfAbsent("a", (key) -> sink);
-		pool.computeIfAbsent("b", (key) -> sink);
-		pool.shutdown();
+    @Test
+    public void shutdown_called_for_all_sinks() {
+        pool.computeIfAbsent("a", (key) -> sink);
+        pool.computeIfAbsent("b", (key) -> sink);
+        pool.shutdown();
 
-		Mockito.verify(sink, Mockito.times(2)).stop();
-	}
+        Mockito.verify(sink, Mockito.times(2)).stop();
+    }
 }
