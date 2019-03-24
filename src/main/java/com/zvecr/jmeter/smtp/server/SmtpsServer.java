@@ -22,108 +22,105 @@ import org.subethamail.smtp.MessageHandlerFactory;
 import org.subethamail.smtp.server.SMTPServer;
 
 /**
- * Local extension of {@link org.subethamail.smtp.server.SMTPServer} to add
- * missing ssl keystore support.
+ * Local extension of {@link org.subethamail.smtp.server.SMTPServer} to add missing ssl keystore support.
  */
 public class SmtpsServer extends SMTPServer {
 
-	private String keystorePassword;
-	private File keystore;
+    private String keystorePassword;
+    private File keystore;
 
-	public SmtpsServer(MessageHandlerFactory handlerFactory) {
-		super(handlerFactory);
-	}
+    public SmtpsServer(MessageHandlerFactory handlerFactory) {
+        super(handlerFactory);
+    }
 
-	private InputStream getKeystoreStream() throws IOException {
-		if (keystore != null) {
-			return Files.newInputStream(keystore.toPath());
-		}
+    private InputStream getKeystoreStream() throws IOException {
+        if (keystore != null) {
+            return Files.newInputStream(keystore.toPath());
+        }
 
-		// using a "built in" default keystore is a bit hacky
-		//   but reduces the time to setup basic tests
-		keystorePassword = "password";
-		return this.getClass().getResourceAsStream("/keystore.jks");
-	}
+        // using a "built in" default keystore is a bit hacky
+        // but reduces the time to setup basic tests
+        keystorePassword = "password";
+        return this.getClass().getResourceAsStream("/keystore.jks");
+    }
 
-	private SSLContext getSSLContext() throws GeneralSecurityException, IOException {
-		// honour system properties if set
-		String keyStoreFilename = System.getProperty("javax.net.ssl.keyStore", "");
-		String keyStorePassword = System.getProperty("javax.net.ssl.keyStorePassword", "");
-		if (!keyStoreFilename.isEmpty() && !keyStorePassword.isEmpty())
-			return SSLContext.getDefault();
+    private SSLContext getSSLContext() throws GeneralSecurityException, IOException {
+        // honour system properties if set
+        String keyStoreFilename = System.getProperty("javax.net.ssl.keyStore", "");
+        String keyStorePassword = System.getProperty("javax.net.ssl.keyStorePassword", "");
+        if (!keyStoreFilename.isEmpty() && !keyStorePassword.isEmpty())
+            return SSLContext.getDefault();
 
-		KeyStore keyStore = KeyStore.getInstance("JKS");
-		try (InputStream file = getKeystoreStream()) {
-			keyStore.load(file, keystorePassword.toCharArray());
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        try (InputStream file = getKeystoreStream()) {
+            keyStore.load(file, keystorePassword.toCharArray());
 
-			KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-			keyManagerFactory.init(keyStore, keystorePassword.toCharArray());
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+            keyManagerFactory.init(keyStore, keystorePassword.toCharArray());
 
-			TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-			tmf.init(keyStore);
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+            tmf.init(keyStore);
 
-			SSLContext ctx = SSLContext.getInstance("TLS");
-			ctx.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), null);
+            SSLContext ctx = SSLContext.getInstance("TLSv1.2");
+            ctx.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), null);
 
-			return ctx;
-		}
-	}
+            return ctx;
+        }
+    }
 
-	@Override
-	public SSLSocket createSSLSocket(Socket socket) throws IOException {
-		try {
-			SSLSocketFactory factory = getSSLContext().getSocketFactory();
+    @Override
+    public SSLSocket createSSLSocket(Socket socket) throws IOException {
+        try {
+            SSLSocketFactory factory = getSSLContext().getSocketFactory();
 
-			InetSocketAddress remoteAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
-			SSLSocket s = (SSLSocket) (factory.createSocket(socket, remoteAddress.getHostName(), socket.getPort(),
-					true));
+            InetSocketAddress remoteAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
+            SSLSocket s = (SSLSocket) (factory.createSocket(socket, remoteAddress.getHostName(), socket.getPort(), true));
 
-			// we are a server
-			s.setUseClientMode(false);
+            // we are a server
+            s.setUseClientMode(false);
 
-			// allow all supported cipher suites
-			s.setEnabledCipherSuites(s.getSupportedCipherSuites());
+            // allow all supported cipher suites
+            s.setEnabledCipherSuites(s.getSupportedCipherSuites());
 
-			return s;
-		} catch (GeneralSecurityException e) {
-			throw new IOException(e);
-		}
-	}
+            return s;
+        } catch (GeneralSecurityException e) {
+            throw new IOException(e);
+        }
+    }
 
-	@Override
-	protected ServerSocket createServerSocket() throws IOException {
-		if (!this.getEnableTLS() || this.getRequireTLS()) {
-			return super.createServerSocket();
-		}
+    @Override
+    protected ServerSocket createServerSocket() throws IOException {
+        if (!this.getEnableTLS() || this.getRequireTLS()) {
+            return super.createServerSocket();
+        }
 
-		try {
-			SSLServerSocketFactory factory = getSSLContext().getServerSocketFactory();
+        try {
+            SSLServerSocketFactory factory = getSSLContext().getServerSocketFactory();
 
-			SSLServerSocket sslserversocket = (SSLServerSocket) factory.createServerSocket(this.getPort(),
-					this.getBacklog(), this.getBindAddress());
+            SSLServerSocket sslserversocket = (SSLServerSocket) factory.createServerSocket(this.getPort(), this.getBacklog(), this.getBindAddress());
 
-			// allow all supported cipher suites
-			sslserversocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
+            // allow all supported cipher suites
+            sslserversocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
 
-			return sslserversocket;
-		} catch (GeneralSecurityException e) {
-			throw new IOException(e);
-		}
-	}
+            return sslserversocket;
+        } catch (GeneralSecurityException e) {
+            throw new IOException(e);
+        }
+    }
 
-	public String getKeystorePassword() {
-		return keystorePassword;
-	}
+    public String getKeystorePassword() {
+        return keystorePassword;
+    }
 
-	public void setKeystorePassword(String keystorePassword) {
-		this.keystorePassword = keystorePassword;
-	}
+    public void setKeystorePassword(String keystorePassword) {
+        this.keystorePassword = keystorePassword;
+    }
 
-	public File getKeystore() {
-		return keystore;
-	}
+    public File getKeystore() {
+        return keystore;
+    }
 
-	public void setKeystore(File keystore) {
-		this.keystore = keystore;
-	}
+    public void setKeystore(File keystore) {
+        this.keystore = keystore;
+    }
 }

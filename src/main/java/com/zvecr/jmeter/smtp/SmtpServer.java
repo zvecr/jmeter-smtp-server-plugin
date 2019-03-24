@@ -24,6 +24,7 @@ import com.zvecr.jmeter.util.DefaultedTestStateListener;
  * <li>stops all servers on test start</li>
  */
 public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTestStateListener {
+
 	private static final long serialVersionUID = -4167583106547081311L;
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpServer.class);
 	private static final SmtpSinkPool DEFAULT_POOL = new SmtpSinkPool();
@@ -68,8 +69,6 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	 * @return configured and started smtp server
 	 */
 	SmtpSink getOrCreateServer() {
-		// TODO: use something (hash of config?) to allow multiple servers per thread group?
-		// String computedKey = Integer.valueOf(getThreadContext().getThreadGroup().hashCode()).toString();
 		String computedKey = getThreadContext().getThreadGroup().getName() + this.getName();
 
 		return pool.computeIfAbsent(computedKey, key -> {
@@ -77,7 +76,6 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 
 			SmtpSink server = new SmtpSink(getServerHost(), getServerPort());
 			server.withTimeouts(getConnectTimeout(), getReadTimeout());
-			// getThreadContext().getThreadGroup().getNumberOfThreads();
 
 			if (getAuthEnabled())
 				server.withAuth(getAuthUsername(), getAuthPassword());
@@ -110,9 +108,6 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 				throw new IOException("failed to get message");
 			}
 
-			// sample.setSampleLabel("Message " + message.getMessageId());
-			// sample.setSamplerData("Message " + message.getMessageId());
-
 			sample.setContentType(message.getMimeType());// Store the content-type
 			sample.setDataEncoding("iso-8859-1"); // RFC 822 uses ascii per default
 			sample.setEncodingAndType(message.getMimeType());// Parse the content-type
@@ -139,6 +134,16 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
 	public void testEnded() {
 		LOG.info("testEnded - shutting down plugin");
 		pool.shutdown();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	public String getServerHost() {
