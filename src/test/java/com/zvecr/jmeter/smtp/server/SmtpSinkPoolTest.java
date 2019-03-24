@@ -1,5 +1,6 @@
 package com.zvecr.jmeter.smtp.server;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
@@ -23,16 +24,16 @@ public class SmtpSinkPoolTest {
     }
 
     @Test
-    public void add_only_once() {
-        pool.computeIfAbsent("a", (key) -> sink);
-        pool.computeIfAbsent("a", (key) -> {
+    public void addOnlyOnce() {
+        assertEquals(sink, pool.computeIfAbsent("a", (key) -> sink));
+        assertEquals(sink, pool.computeIfAbsent("a", (key) -> {
             fail();
             return null;
-        });
+        }));
     }
 
     @Test
-    public void shutdown_called_for_all_sinks() {
+    public void shutdownCalledForAllSinks() {
         pool.computeIfAbsent("a", (key) -> sink);
         pool.computeIfAbsent("b", (key) -> sink);
         pool.shutdown();

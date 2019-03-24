@@ -18,13 +18,13 @@ public class CheckboxEditorTest {
     }
 
     @Test
-    public void valid_editor() {
+    public void validEditor() {
         assertTrue(editor.supportsCustomEditor());
         assertTrue(editor.getCustomEditor() instanceof JCheckBox);
     }
 
     @Test
-    public void as_text_conversion() {
+    public void asTextConversion() {
         editor.setAsText("true");
         assertEquals("true", editor.getAsText());
 
@@ -33,7 +33,7 @@ public class CheckboxEditorTest {
     }
 
     @Test
-    public void as_boolean_conversion() {
+    public void asBooleanConversion() {
         editor.setValue(true);
         assertEquals(true, editor.getValue());
 
@@ -45,7 +45,7 @@ public class CheckboxEditorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void as_unexpected_conversion() {
+    public void asUnexpectedConversion() {
         editor.setValue(1);
     }
 }

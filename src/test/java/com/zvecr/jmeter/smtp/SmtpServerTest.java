@@ -53,13 +53,13 @@ public class SmtpServerTest {
     }
 
     @Test
-    public void timeout_produces_ignored_sample() {
+    public void timeoutProducesIgnoredSample() {
         SampleResult sample = server.sample(null);
         assertTrue(sample.isIgnore());
     }
 
     @Test
-    public void receive_produces_valid_sample() {
+    public void receiveProducesValidSample() {
         Mockito.when(sink.pop()).thenReturn(message);
 
         SampleResult sample = server.sample(null);
@@ -67,13 +67,13 @@ public class SmtpServerTest {
     }
 
     @Test
-    public void end_test_shuts_down_servers() {
+    public void endTestShutsDownServers() {
         server.testEnded();
         Mockito.verify(pool).shutdown();
     }
 
     @Test
-    public void bean_supports_server_props() {
+    public void beanSupportsServerProps() {
         server.setServerHost("127.0.0.1");
         assertEquals("127.0.0.1", server.getServerHost());
 
@@ -82,7 +82,7 @@ public class SmtpServerTest {
     }
 
     @Test
-    public void bean_supports_timeout_props() {
+    public void beanSupportsTimeoutProps() {
         server.setConnectTimeout(1000);
         assertEquals(Integer.valueOf(1000), server.getConnectTimeout());
 
@@ -91,7 +91,7 @@ public class SmtpServerTest {
     }
 
     @Test
-    public void bean_supports_auth_props() {
+    public void beanSupportsAuthProps() {
         server.setAuthEnabled(true);
         assertEquals(true, server.getAuthEnabled());
 

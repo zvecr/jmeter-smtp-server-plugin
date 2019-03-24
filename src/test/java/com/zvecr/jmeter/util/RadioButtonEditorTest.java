@@ -48,13 +48,13 @@ public class RadioButtonEditorTest {
     }
 
     @Test
-    public void valid_editor() {
+    public void validEditor() {
         assertTrue(editor.supportsCustomEditor());
         assertTrue(editor.getCustomEditor() instanceof JPanel);
     }
 
     @Test
-    public void as_text_conversion() {
+    public void asTextConversion() {
         editor.setAsText("foo");
         assertEquals("foo", editor.getAsText());
 
@@ -63,7 +63,7 @@ public class RadioButtonEditorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void as_unexpected_conversion() {
+    public void asUnexpectedConversion() {
         editor.setValue(1);
     }
 }
