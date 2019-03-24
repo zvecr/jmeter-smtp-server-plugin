@@ -15,5 +15,22 @@ mvn jmeter:gui
 ```
 
 ## Example Overview
+
 - Simple
-    - Simulates a load test targeting message throughput per hour.
+
+  - Simulates a load test targeting message throughput per hour.
+
+- Auth
+
+  - As __Simple__ with SMTP Auth enabled
+  - All clients send valid credentials
+
+- SSL
+
+  - As __Simple__ with SSL transport
+  - Uses and ignores self signed certs
+
+- STARTTLS
+
+  - As __Simple__ with transport upgraded to SSL
+  - Uses and ignores self signed certs
