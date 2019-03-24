@@ -1,6 +1,7 @@
 # jmeter-smtp-server-plugin
 > SMTP server plugin for JMeter.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1e562d44ce5542cfb98fd11decd78d07)](https://app.codacy.com/app/git_29/jmeter-smtp-server-plugin?utm_source=github.com&utm_medium=referral&utm_content=zvecr/jmeter-smtp-server-plugin&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/zvecr/jmeter-smtp-server-plugin.svg?branch=master)](https://travis-ci.org/zvecr/jmeter-smtp-server-plugin)
 
 Self contained, pure java SMTP server hosted directly within JMeter. Aligned with the default `SMTP sampler`, the plugin provides support for various configuration including SMTP auth and TLS.
