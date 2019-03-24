@@ -13,9 +13,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SmtpSinkPoolTest {
 
     @Mock
-    SmtpSink sink;
+    private SmtpSink sink;
 
-    SmtpSinkPool pool;
+    private SmtpSinkPool pool;
 
     @Before
     public void init() throws Exception {

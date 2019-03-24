@@ -19,6 +19,7 @@ import org.subethamail.smtp.RejectException;
 public class SinkMessageHandler implements MessageHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SinkMessageHandler.class);
 
+    private final MessageBuilder builder = new DefaultMessageBuilder();
     private final BlockingQueue<Message> messages;
 
     /**
@@ -27,8 +28,6 @@ public class SinkMessageHandler implements MessageHandler {
     public SinkMessageHandler(BlockingQueue<Message> messages) {
         this.messages = messages;
     }
-
-    private final MessageBuilder builder = new DefaultMessageBuilder();
 
     @Override
     public void from(String from) {

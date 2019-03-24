@@ -25,20 +25,20 @@ import com.zvecr.jmeter.smtp.server.SmtpSinkPool;
 public class SmtpServerTest {
 
     @Mock
-    SmtpSinkPool pool;
+    private SmtpSinkPool pool;
 
     @Mock
-    SmtpSink sink;
+    private SmtpSink sink;
 
     @Mock
-    JMeterContext threadContext;
+    private JMeterContext threadContext;
 
     @Mock
-    AbstractThreadGroup threadGroup;
+    private AbstractThreadGroup threadGroup;
 
-    Message message;
+    private Message message;
 
-    SmtpServer server;
+    private SmtpServer server;
 
     @Before
     public void init() throws Exception {

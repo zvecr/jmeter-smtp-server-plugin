@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class CheckboxEditorTest {
 
-    CheckboxEditor editor;
+    private CheckboxEditor editor;
 
     @Before
     public void init() throws Exception {

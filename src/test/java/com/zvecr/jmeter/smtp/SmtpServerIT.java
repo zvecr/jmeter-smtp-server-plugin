@@ -20,18 +20,17 @@ import com.zvecr.jmeter.smtp.server.SmtpSinkPool;
 
 public class SmtpServerIT {
 
-    static final Email email = EmailBuilder.startingBlank().from("foo@bar.com").to("bar@foo.com").withSubject("TestMail").withPlainText("This is a test mail").buildEmail();
+    private static final Email email = EmailBuilder.startingBlank().from("foo@bar.com").to("bar@foo.com").withSubject("TestMail").withPlainText("This is a test mail").buildEmail();
 
-    SmtpSinkPool pool;
+    private SmtpSinkPool pool;
+    private SmtpServer server;
 
-    SmtpServer server;
-
-    static void dumpSample(SampleResult sampleResult) {
-        System.err.println(sampleResult.getResponseDataAsString());
+    private static MailerRegularBuilder getMailer() {
+        return MailerBuilder.withSMTPServer("localhost", 10025).withSessionTimeout(2500);
     }
 
-    static MailerRegularBuilder getMailer() {
-        return MailerBuilder.withSMTPServer("localhost", 10025).withSessionTimeout(2500);
+    private static void dumpSample(SampleResult sampleResult) {
+        System.err.println(sampleResult.getResponseDataAsString());
     }
 
     @Before

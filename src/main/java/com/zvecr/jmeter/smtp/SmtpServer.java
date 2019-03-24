@@ -14,6 +14,7 @@ import org.apache.jmeter.testbeans.TestBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.zvecr.jmeter.smtp.server.SmtpSink;
 import com.zvecr.jmeter.smtp.server.SmtpSinkPool;
 import com.zvecr.jmeter.util.DefaultedTestStateListener;
@@ -68,6 +69,7 @@ public class SmtpServer extends AbstractSampler implements TestBean, DefaultedTe
      * 
      * @return configured and started smtp server
      */
+    @VisibleForTesting
     SmtpSink getOrCreateServer() {
         String computedKey = getThreadContext().getThreadGroup().getName() + this.getName();
 

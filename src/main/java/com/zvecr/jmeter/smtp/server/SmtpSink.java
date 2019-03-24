@@ -16,7 +16,7 @@ import org.subethamail.smtp.auth.LoginFailedException;
  * SMTP server backed with a receiving message queue
  */
 public class SmtpSink {
-    static final Logger LOG = LoggerFactory.getLogger(SmtpSink.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SmtpSink.class);
 
     private final BlockingQueue<Message> messages = new LinkedBlockingQueue<>();
     private final SmtpsServer server = new SmtpsServer(ctx -> new SinkMessageHandler(messages));

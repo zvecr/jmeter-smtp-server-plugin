@@ -14,11 +14,15 @@ import javax.swing.JRadioButton;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
 import org.apache.jmeter.testbeans.gui.TestBeanPropertyEditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Adds support for multiple {@link JRadioButton} as a {@link PropertyDescriptor} editor type
  */
 public class RadioButtonEditor extends PropertyEditorSupport implements TestBeanPropertyEditor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RadioButtonEditor.class);
 
     public static final String OPTS = "OPTS";
 
@@ -69,6 +73,7 @@ public class RadioButtonEditor extends PropertyEditorSupport implements TestBean
     public void setValue(Object value) {
         if (value == null) {
             // do something with default ???
+            LOG.trace("Attepted to set {} to null", this);
         } else if (value instanceof String) {
             group.clearSelection();
             Optional<JRadioButton> button = buttons.stream().filter(x -> x.getActionCommand().equals(value)).findFirst();

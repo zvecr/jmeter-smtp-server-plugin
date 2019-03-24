@@ -23,9 +23,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class RadioButtonEditorTest {
 
     @Mock
-    PropertyDescriptor descriptor;
+    private PropertyDescriptor descriptor;
 
-    RadioButtonEditor editor;
+    private RadioButtonEditor editor;
 
     @Before
     public void init() throws Exception {
