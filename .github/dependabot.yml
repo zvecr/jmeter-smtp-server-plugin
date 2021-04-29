@@ -1,0 +1,36 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.apache.jmeter:ApacheJMeter_core
+    versions:
+    - "> 5.1"
+  - dependency-name: org.slf4j:slf4j-api
+    versions:
+    - ">= 1.7.26.a, < 1.7.27"
+  - dependency-name: org.simplejavamail:simple-java-mail
+    versions:
+    - 6.4.4
+    - 6.4.5
+    - 6.5.0
+    - 6.5.1
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - 3.7.7
+    - 3.8.0
+- package-ecosystem: maven
+  directory: "/examples"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.lazerycode.jmeter:jmeter-maven-plugin
+    versions:
+    - ">= 2.9.a, < 2.10"
+  - dependency-name: com.lazerycode.jmeter:jmeter-maven-plugin
+    versions:
+    - 3.3.0
